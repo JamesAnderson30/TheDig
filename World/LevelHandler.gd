@@ -1,6 +1,14 @@
 extends Node
 
+signal level_changed
 
+var root_scene = null
+
+func init(mainRoot):
+	root_scene = mainRoot
+	print("Root Scene is: ", root_scene)
+	if(!root_scene):
+		print("LevelHandler cannot find main.gd")
 
 var level_list = {
 	# adding main menu to list, and defining "id" to use in first thing
@@ -25,8 +33,16 @@ func _ready():
 	
 	
 func loadLevel(level_id):
-	print("Level handler recieved call..")
-	var levelScene = level_list[level_id]["scene"].instantiate()
+	print("Level handler recieved call: ", level_id)
+#	First, clean the root scene
+	for child in root_scene.get_children():
+		child.queue_free()
 	
-	return levelScene
-	push_error("failed on loadLevel, could not find level ID in level list", % level_id)
+	var levelScene = level_list[level_id]["scene"].instantiate()
+	print("LevelScene is : ", levelScene)
+	
+	if(!levelScene):
+		push_error("failed on loadLevel, could not find level ID in level list", % level_id)
+	else:
+		root_scene.add_child(levelScene)
+	

@@ -13,6 +13,10 @@ func _physics_process(delta):
 	# Handle jumpies
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		
+	# Pressing 'G' lets you manually trigger things for testing
+	if Input.is_action_just_pressed("debug_action"):
+		emit_signal("change_level")
 
 	# Get the input direction and handle the movement/deceleration.
 	# prolly replace UI default actions with our own custom ones..
