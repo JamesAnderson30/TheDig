@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+signal debug_signal
 
 const SPEED = 130.0 #could adjust for a sprint or w/e
 const JUMP_VELOCITY = -300.0
@@ -13,6 +14,10 @@ func _physics_process(delta):
 	# Handle jumpies
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		
+	# Pressing 'G' lets you manually trigger things for testing
+	if Input.is_action_just_pressed("debug_action"):
+		emit_signal("debug_signal")
 
 	# Get the input direction and handle the movement/deceleration.
 	# prolly replace UI default actions with our own custom ones..

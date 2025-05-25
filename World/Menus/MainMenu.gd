@@ -3,12 +3,6 @@ extends Node
 @onready var new_game_menu = $NewGameMenu
 @onready var top_level_menu = $TopLevelMenu
 
-
-var LevelHandler = preload("res://World/LevelHandler.tscn")
-var levelHandler = LevelHandler.instantiate()
-
-
-
 func _ready():
 	new_game_menu.hide()
 	$TopLevelMenu/VBoxContainer/Start.grab_focus()
@@ -37,6 +31,7 @@ func _on_quit_pressed():
 
 
 func _on_new_game_pressed():
+	LevelHandler.loadLevel("testLevel")
 	pass # Replace with function body.
 	
 
