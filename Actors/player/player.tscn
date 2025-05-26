@@ -1,7 +1,28 @@
-[gd_scene load_steps=9 format=3 uid="uid://igi0wd7rrfsy"]
+[gd_scene load_steps=15 format=3 uid="uid://igi0wd7rrfsy"]
 
 [ext_resource type="Script" uid="uid://5nwxd2ankmsu" path="res://Actors/player/player.gd" id="1_q3noh"]
 [ext_resource type="Texture2D" uid="uid://cys1ec4gn5qxr" path="res://PlaceholderAssets(Brackeys)/sprites/knight.png" id="1_sor1j"]
+[ext_resource type="Texture2D" uid="uid://c0botr5mptvyj" path="res://PlaceholderAssets(Brackeys)/sprites/knight_attack.png" id="2_vej48"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vej48"]
+atlas = ExtResource("2_vej48")
+region = Rect2(120, 0, 30, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghdfv"]
+atlas = ExtResource("2_vej48")
+region = Rect2(90, 0, 30, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xr1t5"]
+atlas = ExtResource("2_vej48")
+region = Rect2(60, 0, 30, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6cu2y"]
+atlas = ExtResource("2_vej48")
+region = Rect2(30, 0, 30, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgis1"]
+atlas = ExtResource("2_vej48")
+region = Rect2(0, 0, 30, 33)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y2lmi"]
 atlas = ExtResource("1_sor1j")
@@ -21,6 +42,26 @@ region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4bcxw"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vej48")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghdfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xr1t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6cu2y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qgis1")
+}],
+"loop": false,
+"name": &"Attack",
+"speed": 30.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_y2lmi")
@@ -50,11 +91,13 @@ script = ExtResource("1_q3noh")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_4bcxw")
-animation = &"Idle"
+animation = &"Attack"
 autoplay = "Idle"
-frame = 2
-frame_progress = 0.0733569
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_1c8hm")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_attack_animation_finished"]
