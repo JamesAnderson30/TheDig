@@ -10,6 +10,6 @@ func _ready():
 #   This will allow level handler to clean main and reload new levels onto it
 #	Therefore, it's very important that the game gives control to LevelHandler
 	LevelHandler.init(self)
-	
+
 	LevelHandler.loadLevel("mainMenu")
 	

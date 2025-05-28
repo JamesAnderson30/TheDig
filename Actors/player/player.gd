@@ -18,7 +18,7 @@ func _physics_process(delta):
 		
 	# Pressing 'G' lets you manually trigger things for testing
 	if Input.is_action_just_pressed("debug_action"):
-		emit_signal("debug_signal")
+		print(ActorRegister.getById("TestEnemy"))
 
 	if Input.is_action_just_pressed("attack"):
 		print("attacked!")
