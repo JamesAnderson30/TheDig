@@ -5,6 +5,12 @@ signal debug_signal
 const SPEED = 130.0 #could adjust for a sprint or w/e
 const JUMP_VELOCITY = -300.0
 
+func _ready() -> void:
+	ActorRegister.registerNPC(self, ActorRegister.getEntryByName("Player"))
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _physics_process(delta):
 	# Add the gravity so don't float
@@ -18,14 +24,14 @@ func _physics_process(delta):
 		
 	# Pressing 'G' lets you manually trigger things for testing
 	if Input.is_action_just_pressed("debug_action"):
-		print(ActorRegister.getById("TestEnemy"))
+		ActorRegister.dumpNpcRegistry()
 
 	if Input.is_action_just_pressed("attack"):
 		print("attacked!")
 		$AnimatedSprite2D.play("Attack")
 		return
 		
-		
+	
 	# Get the input direction and handle the movement/deceleration.
 	# prolly replace UI default actions with our own custom ones..
 	# add new animation sprite thingy? must research.

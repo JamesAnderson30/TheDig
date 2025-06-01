@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8do8cj1kk2rb"]
+[gd_scene load_steps=8 format=3 uid="uid://c8do8cj1kk2rb"]
 
 [ext_resource type="Texture2D" uid="uid://b1fnxwrynv6fw" path="res://PlaceholderAssets(Brackeys)/sprites/slime_green.png" id="1_e8ipd"]
-[ext_resource type="Script" uid="uid://cd2wxmky5m3ky" path="res://Actors/enemy/fruits/test_fruit_enemy.gd" id="1_x7lvn"]
+[ext_resource type="Script" uid="uid://cd2wxmky5m3ky" path="res://Actors/enemy/fruits/testFruitEnemy/test_fruit_enemy.gd" id="1_x7lvn"]
+[ext_resource type="Script" uid="uid://b2iyt3gh0istj" path="res://Actors/enemy/fruits/testFruitEnemy/State/idle.gd" id="3_2d8kd"]
 
 [sub_resource type="Animation" id="Animation_x7lvn"]
 resource_name = "Idle"
@@ -134,3 +135,8 @@ libraries = {
 position = Vector2(0, -4.5)
 scale = Vector2(1, 1.04)
 shape = SubResource("RectangleShape2D_i3fpk")
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("3_2d8kd")
