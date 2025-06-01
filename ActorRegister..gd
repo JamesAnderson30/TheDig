@@ -33,17 +33,54 @@ func _process(delta: float) -> void:
 
 func _on_level_changed():
 	print("The level has changed!")
-	
-func getById(id):
-	if(npcDictionary.has(id)):
-		return load(npcDictionary[id]["scene"]).instantiate()
+
+func getOneNodeByName(name):
+	if(npcRegistry.has(name)):
+		return npcRegistry[name][0].node
 	else:
-		print("Could not find NPC: ", id)
 		return null
 
+func getNewInstanceByName(name):
+	if(npcDictionary.has(name)):
+		var dictionaryEntry = npcDictionary[name]
+		var newNPC = load(dictionaryEntry["scene"]).instantiate()
+		registerNPC(newNPC, dictionaryEntry)
+		return newNPC
+	else:
+		print("Could not find NPC: ", name)
+		return null
+		
+func registerNPC(NPC: Node2D, entry: Dictionary):
+	entry["node"] = NPC
+	if(npcRegistry.has(entry["name"])):
+		npcRegistry[entry["name"]].append(entry)
+	else:
+		npcRegistry[entry["name"]] = [entry]
+		
+var npcRegistry = {}
+
+func getEntryByName(name):
+	if(npcDictionary.has(name)):
+		return npcDictionary[name]
+	else:
+		print("No NPC by that name exists!")
+		return null
+
+func dumpNpcRegistry():
+	print("NPC Registry: ", npcRegistry)
+
 var npcDictionary = {
+	"Player": {
+		"name": "Player",
+		"scene": "res://Actors/player/player.tscn",
+		"faction": "dig",
+		"class": "player",
+		"disposition": "player"
+	},
+#	ENEMIES HERE
 	"TestEnemy": {
-		"scene": "res://Actors/enemy/fruits/testFruitEnemy.tscn",
+		"name": "TestEnemy",
+		"scene": "res://Actors/enemy/fruits/testFruitEnemy/testFruitEnemy.tscn",
 		"faction": "fruit",
 		"class": "small",
 		"disposition": "enemy"

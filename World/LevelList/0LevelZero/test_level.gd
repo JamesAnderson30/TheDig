@@ -10,7 +10,7 @@ var initSpawn = [
 	]
 func _ready():
 	for spawn in initSpawn:
-		var newSpawn = ActorRegister.getById(spawn.id)
+		var newSpawn = ActorRegister.getNewInstanceByName(spawn.id)
 		print("trying to spawn: ", newSpawn)
 		if(newSpawn):
 			newSpawn.position = Vector2(spawn.x, spawn.y)
