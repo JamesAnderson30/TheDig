@@ -1,8 +1,12 @@
-[gd_scene load_steps=35 format=3 uid="uid://igi0wd7rrfsy"]
+[gd_scene load_steps=39 format=3 uid="uid://igi0wd7rrfsy"]
 
 [ext_resource type="Script" uid="uid://5nwxd2ankmsu" path="res://Actors/player/player.gd" id="1_q3noh"]
 [ext_resource type="Texture2D" uid="uid://cys1ec4gn5qxr" path="res://PlaceholderAssets(Brackeys)/sprites/knight.png" id="1_sor1j"]
 [ext_resource type="Texture2D" uid="uid://c0botr5mptvyj" path="res://PlaceholderAssets(Brackeys)/sprites/knight_attack.png" id="2_vej48"]
+[ext_resource type="Script" uid="uid://dtl2bhmd45mk0" path="res://Actors/player/state.gd" id="4_xr1t5"]
+[ext_resource type="Script" uid="uid://buhfajl6j1axv" path="res://Actors/player/idle.gd" id="5_6cu2y"]
+[ext_resource type="Script" uid="uid://btb00f5v21xio" path="res://Actors/player/run.gd" id="6_6cu2y"]
+[ext_resource type="Script" uid="uid://bh22qokkbe1oy" path="res://Actors/player/attack.gd" id="7_qgis1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3sfd7"]
 atlas = ExtResource("1_sor1j")
@@ -249,18 +253,36 @@ height = 12.0
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_q3noh")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Animations" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_4bcxw")
 animation = &"Run"
 autoplay = "Idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Hitbox" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_1c8hm")
 
 [node name="CoyoteTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_AnimatedSprite2D_animation_finished"]
+[node name="State" type="Node" parent="."]
+script = ExtResource("4_xr1t5")
+
+[node name="Idle" type="Node" parent="State"]
+script = ExtResource("5_6cu2y")
+
+[node name="Run" type="Node" parent="State"]
+script = ExtResource("6_6cu2y")
+
+[node name="Attack" type="Node" parent="State"]
+script = ExtResource("7_qgis1")
+
+[node name="Jump" type="Node" parent="State"]
+
+[node name="Damaged" type="Node" parent="State"]
+
+[node name="Falling" type="Node" parent="State"]
+
+[connection signal="animation_finished" from="Animations" to="." method="_on_AnimatedSprite2D_animation_finished"]
