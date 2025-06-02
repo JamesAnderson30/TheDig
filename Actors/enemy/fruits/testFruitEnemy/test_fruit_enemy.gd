@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-var IDLE_STATE = preload("res://Actors/enemy/fruits/testFruitEnemy/State/idle.gd")
-var CHASE_PLAYER_STATE = preload("res://Actors/enemy/fruits/testFruitEnemy/State/chasePlayer.gd")
+const IDLE_STATE = preload("res://Actors/enemy/fruits/testFruitEnemy/State/idle.gd")
+const CHASE_PLAYER_STATE = preload("res://Actors/enemy/fruits/testFruitEnemy/State/chasePlayer.gd")
 
 var current_state
 
