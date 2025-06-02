@@ -7,7 +7,7 @@ var actor: CharacterBody2D
 var state_name: String = "BaseState" # For debugging or comparison
 
 # Called when the state is entered.
-# The 'owner_actor' is the CharacterBody3D (TestFoe) this state will control.
+# The 'owner_actor' is the CharacterBody2D (TestFoe) this state will control.
 func enter(owner_actor: CharacterBody2D) -> void:
 	self.actor = owner_actor
 	# print(actor.name, " entering state: ", state_name)

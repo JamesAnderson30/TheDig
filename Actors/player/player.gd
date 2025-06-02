@@ -7,6 +7,8 @@ var coyote_frames = 6
 var coyote = false
 var coyotePermitted = false
 
+var is_attacking = false
+
 
 
 
@@ -38,27 +40,32 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("debug_action"):
 		ActorRegister.dumpNpcRegistry()
 
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and not is_attacking:
+		is_attacking = true
 		print("attacked!")
 		$AnimatedSprite2D.play("Attack")
-		return
+		velocity.x = move_toward(velocity.x, 0, SPEED * 0.5)
+		#Optional - can have a 'stop moving' or a slow down (as it is now)
+		
 		
 	
 	# Get the input direction and handle the movement/deceleration.
 	# prolly replace UI default actions with our own custom ones..
 	# add new animation sprite thingy? must research.
 	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-		$AnimatedSprite2D.flip_h = direction < 0
+	
+	if not is_attacking:
+		if direction:
+			velocity.x = direction * SPEED
+			$AnimatedSprite2D.flip_h = direction < 0
 		
-		if(direction != 0) and is_on_floor() and $AnimatedSprite2D.animation != "Run":
-			$AnimatedSprite2D.play("Run")
+			if(direction != 0) and is_on_floor() and $AnimatedSprite2D.animation != "Run":
+				$AnimatedSprite2D.play("Run")
 
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		if (direction == 0) and is_on_floor() and $AnimatedSprite2D.animation != "Idle" and $AnimatedSprite2D.animation != "Attack":
-			$AnimatedSprite2D.play("Idle")
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
+			if (direction == 0) and is_on_floor() and $AnimatedSprite2D.animation != "Idle" and $AnimatedSprite2D.animation != "Attack":
+				$AnimatedSprite2D.play("Idle")
 
 	move_and_slide()
 	coyotePermitted = is_on_floor()
@@ -69,5 +76,8 @@ func _physics_process(delta):
 func _on_coyote_timer_timeout():
 	coyote = false
 
-func _attack_animation_finished() -> void:
-	$AnimatedSprite2D.play("Idle")
+#this function is for when any animation ends now..
+func _on_AnimatedSprite2D_animation_finished():
+	if $AnimatedSprite2D.animation == "Attack":
+		is_attacking = false
+		$AnimatedSprite2D.play("Idle")
