@@ -2,10 +2,21 @@ extends CharacterBody2D
 
 signal debug_signal
 
+#coyote time variables.
+var coyote_frames = 6
+var coyote = false
+var coyotePermitted = false
+
+
+
+
 const SPEED = 130.0 #could adjust for a sprint or w/e
 const JUMP_VELOCITY = -300.0
+var jumping = false
 
 func _ready() -> void:
+	$CoyoteTimer.wait_time = coyote_frames / 60.0
+	
 	ActorRegister.registerNPC(self, ActorRegister.getEntryByName("Player"))
 
 func _input(event: InputEvent) -> void:
@@ -18,9 +29,10 @@ func _physics_process(delta):
 		velocity += get_gravity() * delta
 
 	# Handle jumpies
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("ui_accept") and (is_on_floor() or coyote):
 		#$AnimatedSprite2D.play("Jump")
 		velocity.y = JUMP_VELOCITY
+		jumping = true
 		
 	# Pressing 'G' lets you manually trigger things for testing
 	if Input.is_action_just_pressed("debug_action"):
@@ -49,7 +61,13 @@ func _physics_process(delta):
 			$AnimatedSprite2D.play("Idle")
 
 	move_and_slide()
+	coyotePermitted = is_on_floor()
+	if is_on_floor() and coyotePermitted and jumping:
+		coyote = true
+		$CoyoteTimer.start()
 
+func _on_coyote_timer_timeout():
+	coyote = false
 
 func _attack_animation_finished() -> void:
 	$AnimatedSprite2D.play("Idle")
