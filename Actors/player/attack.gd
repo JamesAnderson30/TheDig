@@ -10,6 +10,8 @@ func enter():
 	player.change_state("Idle")
 	
 func process_input(event):
+	if(event.is_action_pressed("space")):
+		return "Jumping"
 	pass
 
 func exit():
@@ -20,4 +22,3 @@ func physics_process(_delta):
 #	Pass the state_name of the new state you want the player to enter
 #	If you want to stay in the same state, return ""
 	return ""
-	pass

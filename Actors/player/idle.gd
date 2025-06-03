@@ -10,13 +10,19 @@ func enter():
 	player.animated_sprite.play("Idle")
 	
 func process_input(event):
+	if(event.is_action_pressed("space")):
+		return "Jumping"
 	pass
 
 #when it processes stuff..?
 func physics_process(delta):
 #	Gravity:
+#	If not on floor, make fall
 	if not player.is_on_floor():
-		player.velocity += get_gravity() * delta
+		player.velocity += player.get_gravity() * delta
+#	If on floor, stop moving
+	else:
+		player.velocity.x = 0
 	var direction = Input.get_axis("ui_left", "ui_right")
 	
 	if direction != 0:

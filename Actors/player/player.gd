@@ -1,5 +1,13 @@
 extends CharacterBody2D
 
+# We may refract all of this. After all, isn't the point of an adventure
+# game is that your character doesn't remain constant?
+const SPEED = 130 #adjustable for sprint or w/e
+const AIR_SPEED_MULTIPLIER = 1
+const AIR_SPEED_ACCELERATION = 1
+const JUMP_POWER = -300
+const EXTRA_JUMPS = 1
+
 #signal debug_signal
 
 #class_name Player
@@ -18,6 +26,7 @@ extends CharacterBody2D
 const Attacking_State = preload("res://Actors/player/attack.gd")
 const Idling_State = preload("res://Actors/player/idle.gd")
 const Running_State = preload("res://Actors/player/run.gd")
+const Jumping_State = preload("res://Actors/player/jump.gd")
 
 # These states are just saved in memory now, but how do we know which state we are in?
 # By creating a current_state variable and setting it to either of these constants.
@@ -42,8 +51,19 @@ func _ready():
 	#change_state("Idling")
 	ActorRegister.registerNPC(self, ActorRegister.getEntryByName("Player"))
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		
+	elif event.is_action_pressed("ui_cancel") and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
 func _unhandled_input(event: InputEvent):
-	current_state.process_input(event)
+	var next_state_name = current_state.process_input(event)
+#	If the process_input function returns a state name, then change state
+	if(typeof(next_state_name) == TYPE_STRING):
+		change_state(next_state_name)
+	pass
 #
 func _physics_process(delta:float):
 	if current_state:
@@ -65,10 +85,10 @@ func _physics_process(delta:float):
 				"Jumping": change_state(next_state_name)
 				"Damaged": change_state(next_state_name)
 				_: printerr(name, ": State ", current_state.state_name, " requested unknown next state '", next_state_name, "'")
-
 	#current_State.process_physics(delta)
-	if not is_on_floor():
-		velocity += get_gravity() * delta
+	#if not is_on_floor():
+		#velocity += get_gravity() * delta
+	move_and_slide()
 #
 #func _process(delta: float):
 	#current_State.process_frame(delta)
@@ -104,11 +124,14 @@ func change_state(new_state_name: String) -> void:
 			current_state = Attacking_State.new(self)
 		"Running":
 			current_state = Running_State.new(self)
+		"Jumping":
+			current_state = Jumping_State.new(self)
 		_: #Error - State doesn't exist
 			printerr("Attempted to change to unknown state: ", new_state_name)
 			current_state = Idling_State.new(self) # Default to idle on error
 
 	current_state.enter() # Call enter on the new state
+	move_and_slide()
 	# print(name, " changed to state: ", current_state.state_name)
 
 # ---USEFUL CODE, COPY AND PASTE LATER DO NOT DELETE MWAH I LOVE YOU ---

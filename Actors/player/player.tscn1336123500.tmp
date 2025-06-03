@@ -184,9 +184,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wpgrq")
 }],
-"loop": false,
+"loop": true,
 "name": &"Jump",
-"speed": 30.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 0.8,
@@ -253,7 +253,7 @@ script = ExtResource("1_q3noh")
 texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_4bcxw")
-animation = &"Jump"
+animation = &"Run"
 autoplay = "Idle"
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
